@@ -1,0 +1,411 @@
+:root {
+  /* Hacktoberfest Official Neo-Brutalist Color Palette */
+  --hf-teal-dark: #2C4D46;
+  --hf-teal-header: #3d5f58;
+  --hf-teal-deep: #1d332e;
+  
+  --hf-bg-cream: #f2f2eb;
+  --hf-bg-white: #ffffff;
+  --hf-bg-offwhite: #f7f5f0;
+
+  --hf-ink: #10201d;
+  --hf-ink-muted: #4a5c57;
+  --hf-ink-subtle: #7a8c88;
+
+  --hf-coral: #FA5438;
+  --hf-salmon: #e97b77;
+  --hf-salmon-shadow: #671912;
+  --hf-yellow: #f5b726;
+  --hf-sky: #8bb2de;
+  --hf-green: #22c55e;
+  --hf-green-dark: #166534;
+
+  /* Typography */
+  --font-display: 'Barlow Semi Condensed', 'Outfit', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'Martian Mono', ui-monospace, monospace;
+
+  /* Neobrutalist Shadow Tokens */
+  --shadow-brutal-sm: 2px 2px 0px #10201d;
+  --shadow-brutal: 4px 4px 0px #10201d;
+  --shadow-brutal-salmon: 4px 4px 0px #671912;
+  --shadow-brutal-lg: 6px 6px 0px #10201d;
+  --shadow-brutal-xl: 8px 8px 0px #10201d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--hf-bg-cream);
+  color: var(--hf-ink);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  min-height: 100vh;
+  position: relative;
+  /* Halftone micro-grid pattern from Hacktoberfest */
+  background-image: 
+    radial-gradient(circle, rgba(16, 32, 29, 0.1) 0 0.5px, transparent 0.7px),
+    radial-gradient(circle, rgba(247, 247, 242, 0.5) 0 0.35px, transparent 0.55px);
+  background-position: 0 0, 4px 4px;
+  background-size: 8px 8px, 12px 12px;
+}
+
+/* Custom Selection */
+::selection {
+  background: var(--hf-salmon);
+  color: var(--hf-ink);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--hf-bg-cream);
+  border-left: 2px solid var(--hf-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hf-teal-dark);
+  border: 1px solid var(--hf-ink);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hf-coral);
+}
+
+/* Layout Shell */
+.app-container {
+  width: min(calc(100% - 32px), 1280px);
+  margin: 0 auto;
+  padding: 24px 0 80px;
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    width: min(calc(100% - 48px), 1280px);
+    padding: 32px 0 96px;
+  }
+}
+
+/* Neobrutalist Card */
+.brutal-card {
+  background: var(--hf-bg-white);
+  border: 2px solid var(--hf-ink);
+  box-shadow: var(--shadow-brutal);
+  border-radius: 0px;
+  padding: 24px;
+  position: relative;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.brutal-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px var(--hf-ink);
+}
+
+/* Dark Teal Section Card */
+.brutal-card-teal {
+  background: var(--hf-teal-dark);
+  color: #f7f7f2;
+  border: 2px solid var(--hf-ink);
+  box-shadow: var(--shadow-brutal);
+  border-radius: 0px;
+  padding: 28px;
+}
+
+/* Neobrutalist Buttons */
+.btn-salmon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--hf-salmon);
+  color: var(--hf-ink);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 10px 18px;
+  border: 2px solid var(--hf-ink);
+  box-shadow: var(--shadow-brutal);
+  border-radius: 0px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.btn-salmon:hover:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--hf-ink);
+}
+.btn-salmon:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--hf-ink);
+}
+.btn-salmon:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.btn-white {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--hf-bg-white);
+  color: var(--hf-ink);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 10px 16px;
+  border: 2px solid var(--hf-ink);
+  box-shadow: var(--shadow-brutal);
+  border-radius: 0px;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.btn-white:hover:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--hf-ink);
+  background: #fafaf5;
+}
+.btn-white:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--hf-ink);
+}
+
+.btn-yellow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--hf-yellow);
+  color: var(--hf-ink);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 10px 18px;
+  border: 2px solid var(--hf-ink);
+  box-shadow: var(--shadow-brutal);
+  border-radius: 0px;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.btn-yellow:hover:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--hf-ink);
+}
+
+.btn-danger-brutal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border: 2px solid #991b1b;
+  box-shadow: var(--shadow-brutal);
+  border-radius: 0px;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.btn-danger-brutal:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #991b1b;
+}
+
+/* Badges / Eyebrow labels */
+.eyebrow-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.eyebrow-mono.coral {
+  color: var(--hf-coral);
+}
+.eyebrow-mono.yellow {
+  color: #b45309;
+}
+.eyebrow-mono.teal {
+  color: var(--hf-teal-dark);
+}
+.eyebrow-mono.sky {
+  color: #0369a1;
+}
+
+/* Category Pill */
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: #f7f7f2;
+  border: 1.5px solid var(--hf-ink);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--hf-ink);
+}
+
+/* Rarity Badges */
+.rarity-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border: 2px solid var(--hf-ink);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  box-shadow: var(--shadow-brutal-sm);
+}
+.rarity-tag.common {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+.rarity-tag.uncommon {
+  background: var(--hf-sky);
+  color: #0c4a6e;
+}
+.rarity-tag.rare {
+  background: #d8b4fe;
+  color: #581c87;
+}
+.rarity-tag.epic {
+  background: var(--hf-yellow);
+  color: #78350f;
+}
+.rarity-tag.legendary {
+  background: var(--hf-coral);
+  color: #ffffff;
+}
+
+/* Hacktoberfest Pixel Steps Accent */
+.pixel-steps {
+  display: inline-flex;
+  gap: 4px;
+}
+.pixel-steps span {
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--hf-ink);
+  display: inline-block;
+}
+.pixel-steps .sq-orange { background: var(--hf-coral); }
+.pixel-steps .sq-sky { background: var(--hf-sky); }
+.pixel-steps .sq-ochre { background: var(--hf-yellow); }
+.pixel-steps .sq-pink { background: var(--hf-salmon); }
+
+/* Progress bar container */
+.brutal-progress-bg {
+  width: 100%;
+  height: 14px;
+  background: #ffffff;
+  border: 2px solid var(--hf-ink);
+  box-shadow: 2px 2px 0px var(--hf-ink);
+  position: relative;
+  overflow: hidden;
+}
+.brutal-progress-fill {
+  height: 100%;
+  transition: width 0.4s ease;
+}
+.brutal-progress-fill.coral { background: var(--hf-coral); }
+.brutal-progress-fill.green { background: var(--hf-green); }
+.brutal-progress-fill.yellow { background: var(--hf-yellow); }
+.brutal-progress-fill.sky { background: var(--hf-sky); }
+
+/* Modal Backdrop */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 32, 29, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.modal-content-brutal {
+  background: var(--hf-bg-white);
+  border: 3px solid var(--hf-ink);
+  box-shadow: var(--shadow-brutal-xl);
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  position: relative;
+  border-radius: 0px;
+  animation: slideUp 0.15s ease-out;
+}
+
+/* Fog of War Sector (Brutalist Grid) */
+.brutal-sector {
+  border: 2px solid var(--hf-ink);
+  box-shadow: var(--shadow-brutal-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  text-align: center;
+  aspect-ratio: 1;
+  transition: all 120ms ease;
+  user-select: none;
+}
+.brutal-sector.unexplored {
+  background: #e5e5dc;
+  border-style: dashed;
+  color: #78716c;
+}
+.brutal-sector.discovered {
+  background: #ffffff;
+  color: var(--hf-ink);
+}
+.brutal-sector.discovered:hover {
+  background: #f0fdf4;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--hf-ink);
+}
+.brutal-sector.mastered {
+  background: var(--hf-teal-dark);
+  color: #ffffff;
+  border: 2px solid var(--hf-ink);
+  box-shadow: 3px 3px 0px var(--hf-coral);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
