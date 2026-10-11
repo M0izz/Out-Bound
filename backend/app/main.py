@@ -2,12 +2,22 @@ import os
 from starlette.types import ASGIApp, Scope, Receive, Send
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from app.models.database import init_db
 from app.seed_data import seed_database
 from app.routers import user, quests, challenges, leaderboard, shop, exploration
 
-# Custom ASGI middleware to fix Vercel rewrite paths if any
+# Initialize database eagerly on cold start
+try:
+    init_db()
+    seed_database()
+    print("[OUT BOUND] Database tables initialized and seeded.")
+except Exception as e:
+    print("[OUT BOUND] Database initialization notice:", e)
+
+# Custom ASGI middleware to normalize Vercel rewrite prefixes
 class VercelPathMiddleware:
     def __init__(self, app: ASGIApp):
         self.app = app
@@ -17,7 +27,7 @@ class VercelPathMiddleware:
             path = scope.get("path", "")
             for prefix in ["/app/main.py", "/main.py", "/api/index.py", "/index.py"]:
                 if path == prefix:
-                    scope["path"] = "/api"
+                    scope["path"] = "/"
                     break
                 elif path.startswith(prefix + "/"):
                     scope["path"] = path[len(prefix):]
@@ -42,7 +52,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include Routers
+# Include API Routers
 app.include_router(user.router, prefix=settings.API_PREFIX)
 app.include_router(quests.router, prefix=settings.API_PREFIX)
 app.include_router(challenges.router, prefix=settings.API_PREFIX)
@@ -52,9 +62,11 @@ app.include_router(exploration.router, prefix=settings.API_PREFIX)
 
 @app.on_event("startup")
 def on_startup():
-    init_db()
-    seed_database()
-    print("[OUT BOUND] Database initialized and seeded with demo player MOIZ!")
+    try:
+        init_db()
+        seed_database()
+    except Exception:
+        pass
 
 @app.get("/health")
 @app.get("/api/health")
@@ -66,15 +78,54 @@ def health():
         "gemma_model": settings.GEMMA_MODEL
     }
 
-@app.get("/")
 @app.get("/api")
-def root():
+def api_root():
+    return {
+        "status": "online",
+        "message": "Welcome to OUT BOUND API — AI Game Master for the real world.",
+        "docs": "/docs",
+        "health": "/health"
+    }
+
+# Locate compiled frontend distribution folder
+current_dir = os.path.dirname(os.path.abspath(__file__))
+dist_candidates = [
+    os.path.join(current_dir, "..", "..", "frontend", "dist"),
+    os.path.join(current_dir, "..", "frontend", "dist"),
+    os.path.join(os.getcwd(), "frontend", "dist"),
+    os.path.join(os.path.dirname(current_dir), "frontend", "dist"),
+]
+frontend_dist = next((d for d in dist_candidates if os.path.isdir(d)), None)
+
+if frontend_dist and os.path.isdir(os.path.join(frontend_dist, "assets")):
+    app.mount("/assets", StaticFiles(directory=os.path.join(frontend_dist, "assets")), name="assets")
+
+# Serve frontend index
+@app.get("/")
+@app.get("/index.html")
+def root_index():
+    if frontend_dist:
+        index_file = os.path.join(frontend_dist, "index.html")
+        if os.path.exists(index_file):
+            return FileResponse(index_file)
     return {
         "status": "online",
         "message": "Welcome to OUT BOUND — Your AI Game Master for the real world.",
         "docs": "/docs",
         "health": "/health"
     }
+
+# SPA Fallback for any client-side routes (e.g. /quests, /map, /challenges)
+@app.get("/{full_path:path}")
+def catch_all(full_path: str):
+    if not full_path.startswith("api") and frontend_dist:
+        candidate_file = os.path.join(frontend_dist, full_path)
+        if os.path.isfile(candidate_file):
+            return FileResponse(candidate_file)
+        index_file = os.path.join(frontend_dist, "index.html")
+        if os.path.exists(index_file):
+            return FileResponse(index_file)
+    return JSONResponse(status_code=404, content={"detail": "Not Found"})
 
 if __name__ == "__main__":
     import uvicorn
