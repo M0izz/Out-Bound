@@ -4,7 +4,7 @@
   "private": true,
   "description": "OUT BOUND — AI Game Master for the Real World",
   "scripts": {
-    "build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "build": "npm --prefix frontend install && npm --prefix frontend run build && node -e \"require('fs').cpSync('frontend/dist', 'api/dist', {recursive: true})\"",
     "dev": "npm --prefix frontend run dev"
   }
 }
