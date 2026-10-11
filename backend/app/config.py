@@ -5,7 +5,10 @@ class Settings(BaseSettings):
     APP_NAME: str = "OUT BOUND - Real-World AI Game Master"
     VERSION: str = "1.0.0"
     API_PREFIX: str = "/api"
-    DATABASE_URL: str = "sqlite:///./outbound.db"
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL",
+        "sqlite:////tmp/outbound.db" if os.getenv("VERCEL") else "sqlite:///./outbound.db"
+    )
     
     # AI Engine Settings
     # Supports open-weight Gemma via HuggingFace Inference API, Ollama local endpoint, or Gemma mock provider

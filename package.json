@@ -1,0 +1,11 @@
+{
+  "name": "out-bound",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OUT BOUND — AI Game Master for the Real World",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "dev": "npm run dev --prefix frontend",
+    "preview": "npm run preview --prefix frontend"
+  }
+}

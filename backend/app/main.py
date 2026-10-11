@@ -36,6 +36,7 @@ def on_startup():
     print("[OUT BOUND] Database initialized and seeded with demo player MOIZ!")
 
 @app.get("/health")
+@app.get("/api/health")
 def health():
     return {
         "status": "healthy",
@@ -45,6 +46,7 @@ def health():
     }
 
 @app.get("/")
+@app.get("/api")
 def root():
     return {
         "message": "Welcome to OUT BOUND — Your AI Game Master for the real world.",
